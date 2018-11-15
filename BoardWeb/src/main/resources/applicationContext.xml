@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	
+	<context:component-scan base-package="com.spring.btz" />
+	
+	<!-- <bean id="userService" class="com.spring.btz.user.impl.UserServiceImpl">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+	
+	<bean id="userDAO" class="com.spring.btz.user.impl.UserDAO"></bean> -->
+	
+	<!-- AOP (p.153) 
+	<bean id="log" class="com.spring.btz.common.LogAdvice" />
+	<bean id="before" class="com.spring.btz.common.BeforeAdvice" />
+	<bean id="afterReturning" class="com.spring.btz.common.AfterReturningAdvice" />
+	<bean id="afterThrowing" class="com.spring.btz.common.AfterThrowingAdvice" />
+	<bean id="around" class="com.spring.btz.common.AroundAdvice"  />  -->
+		
+	<!--<aop:config>
+		 포인트컷 선언 id(식별)
+		<aop:pointcut expression="execution(* com.spring.btz..*Impl.*(..))" id="allPointcut"/>
+		<aop:pointcut expression="execution(* com.spring.btz..*Impl.get*(..))" id="getPointcut"/>
+		
+		<aop:aspect ref="around">
+			<aop:around pointcut-ref="allPointcut" method="aroundLog" />
+		</aop:aspect>	
+		
+	</aop:config>-->
+	
+	<!-- aspect 사용 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- DataSource 설정 -->
+	<!-- <context:property-placeholder location="classpath:config/database.properties" /> -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+								destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="hr" />
+		<property name="password" value="hkitedu" />
+	</bean>
+
+	<!-- Spring JDBC 설정-->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean> 
+	
+	<!-- Transcation 설정 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>		
+	</tx:advice>
+	
+	<!-- Transcation 적용 -->
+	<aop:config>
+		<aop:pointcut id="txPointcut" expression="execution(* com.spring.btz..*(..))" />
+		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice"/>
+	</aop:config>
+	
+</beans>
