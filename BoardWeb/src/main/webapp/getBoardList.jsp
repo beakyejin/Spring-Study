@@ -3,10 +3,7 @@
 <%@page import="com.spring.btz.board.BoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	List<BoardVO> boardList = (List<BoardVO>)session.getAttribute("boardList");
-%>
-
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,19 +37,19 @@
 			<th>등록일</th>
 			<th>조회수</th>
 		</tr>
-		<%for(BoardVO boardvo: boardList){ %>
+		<c:forEach var="vo" items="${boardList}">
 		<tr>
-			<td><%=boardvo.getSeq() %></td>
+			<td>${vo.seq }</td>
 			<td>
-				<a href="getBoard.do?seq=<%=boardvo.getSeq()%>">
-					<%=boardvo.getTitle() %>
+				<a href="getBoard.do?seq=${vo.seq }">
+					${vo.title }
 				</a>
 			</td>
-			<td><%=boardvo.getWriter() %></td>
-			<td><%=boardvo.getRegdate() %></td>
-			<td><%=boardvo.getCnt() %></td>
+			<td>${vo.content }</td>
+			<td>${vo.regdate }</td>
+			<td>${vo.cnt }</td>
 		</tr>
-		<%} %>		
+		</c:forEach>	
 	</table>
 	<a href="insertBoard.jsp">새글 등록</a>
 </body>
