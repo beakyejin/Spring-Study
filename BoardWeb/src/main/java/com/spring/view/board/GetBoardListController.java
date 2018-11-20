@@ -4,16 +4,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
 import com.spring.btz.board.BoardVO;
 import com.spring.btz.board.impl.BoardDAO;
-import com.spring.view.controller.Controller;
 
 public class GetBoardListController implements Controller{
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("글 목록");
 		
 		//1.사용자 입력 정보 추출
@@ -21,10 +22,10 @@ public class GetBoardListController implements Controller{
 		BoardDAO dao = new BoardDAO();
 		List<BoardVO> boardList = dao.getBoardList();
 		
-		//3. 검색 결과 세션 저장하고 목록 화면 이동
-		HttpSession session = request.getSession();
-		session.setAttribute("boardList", boardList);
-		return "getBoardList";
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("boardList", boardList);
+		mv.setViewName("getBoardList");
+		return mv;
 	}
 
 }

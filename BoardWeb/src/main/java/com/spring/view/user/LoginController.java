@@ -3,14 +3,16 @@ package com.spring.view.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import com.spring.btz.user.UserVO;
 import com.spring.btz.user.impl.UserDAO;
-import com.spring.view.controller.Controller;
 
 public class LoginController implements Controller{
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("로그인 처리");
 		
 		//1.사용자 입력 정보 추출
@@ -27,18 +29,19 @@ public class LoginController implements Controller{
 		UserDAO dao = new UserDAO();
 		UserVO user = dao.getUser(vo);
 		
+		ModelAndView mv = new ModelAndView();
 		if(user != null){
 			System.out.print("user[");
 			System.out.print(user.getId()+", "+user.getPassword());
 			System.out.println("]");
 			
 			System.out.println("-->getBoardList.do");
-			return "getBoardList.do";
+			mv.setViewName("redirect:getBoardList.do");
 		}else {
 			System.out.println("-->login.jsp");
-			return "login";
+			mv.setViewName("redirect:login.jsp");
 		}
-		
+		return mv;
 	}
 	
 }

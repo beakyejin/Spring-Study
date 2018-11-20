@@ -3,14 +3,16 @@ package com.spring.view.board;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
 import com.spring.btz.board.BoardVO;
 import com.spring.btz.board.impl.BoardDAO;
-import com.spring.view.controller.Controller;
 
 public class DeleteBoardController implements Controller{
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("글 삭제");
 		
 		String seq = request.getParameter("seq");
@@ -21,7 +23,9 @@ public class DeleteBoardController implements Controller{
 		BoardDAO dao = new BoardDAO();
 		dao.deleteBoard(vo);
 		
-		return "getBoardList.do";
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:getBoardList.do");
+		return mv;
 	}
 	
 }
