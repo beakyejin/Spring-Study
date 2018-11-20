@@ -4,13 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	//1.사용자 입력 정보 추출
-	//2.DB 연동 처리
-	BoardVO vo = new BoardVO();
-	BoardDAO dao = new BoardDAO();
-	List<BoardVO> boardList = dao.getBoardList();
-	
-	//3.응답화면 구성
+	List<BoardVO> boardList = (List<BoardVO>)session.getAttribute("boardList");
 %>
 
 <!DOCTYPE html>
@@ -21,9 +15,9 @@
 </head>
 <body>
 	<h1>글 목록</h1>
-	<a href="logout_proc.jsp">로그아웃</a>
+	<a href="logout.do">로그아웃</a>
 	
-	<form action="getBoardList.jsp" method="post">
+	<form action="getBoardList.do" method="post">
 		<table border="1">
 			<tr>
 				<td>
@@ -50,7 +44,7 @@
 		<tr>
 			<td><%=boardvo.getSeq() %></td>
 			<td>
-				<a href="getBoard.jsp?seq=<%=boardvo.getSeq()%>">
+				<a href="getBoard.do?seq=<%=boardvo.getSeq()%>">
 					<%=boardvo.getTitle() %>
 				</a>
 			</td>

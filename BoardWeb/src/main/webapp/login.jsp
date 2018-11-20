@@ -9,11 +9,11 @@
 <body>
 	<h1>로그인</h1>
 	<hr>
-	<form action="login_proc.jsp" method="post">
+	<form action="login.do" method="post">
 		<table border="1">
 			<tr>
 				<td>아이디</td>
-				<td><input type="text" name=id></td>	
+				<td><input type="text" name="id"></td>	
 			</tr>
 			<tr>
 				<td>비밀번호</td>

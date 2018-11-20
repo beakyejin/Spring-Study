@@ -87,7 +87,7 @@ public class BoardDAO {
 	public BoardVO getBoard(BoardVO vo) {
 		System.out.println("JDBC getBoard()");
 		
-		BoardVO board = null;
+		BoardVO board = new BoardVO();
 		
 		try {
 			con = JDBCUtil.getConnection();
@@ -98,7 +98,6 @@ public class BoardDAO {
 			rs = ps.executeQuery();
 			
 			if(rs.next()){
-				board = new BoardVO();
 				board.setSeq(rs.getInt("seq"));
 				board.setTitle(rs.getString("title"));
 				board.setWriter(rs.getString("writer"));

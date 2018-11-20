@@ -8,9 +8,9 @@
 </head>
 <body>
 	<h1>글 등록</h1>
-	<a href="logout_proc.jsp">로그아웃</a>
+	<a href="logout.do">로그아웃</a>
 	
-	<form action="insertBoard_proc.jsp" method="post">
+	<form action="insertBoard.do" method="post">
 		<table border="1">
 			<tr>
 				<th>제목</th>
@@ -30,7 +30,7 @@
 				</td>
 			</tr>
 		</table>
-		<a href="getBoardList.jsp">글 목록 가기 </a>
+		<a href="getBoardList.do">글 목록 가기 </a>
 	</form>
 </body>
 </html>
