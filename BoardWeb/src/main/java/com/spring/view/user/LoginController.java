@@ -1,47 +1,43 @@
 package com.spring.view.user;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.btz.user.UserVO;
 import com.spring.btz.user.impl.UserDAO;
 
-public class LoginController implements Controller{
+@Controller
+public class LoginController {
 
-	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value="/login.do", method=RequestMethod.GET)
+	public String loginView(@ModelAttribute("user") UserVO vo) {
+		System.out.println("로그인 화면 이동");
+		vo.setId("test");
+		vo.setPassword("test123");
+		
+		return "login.jsp";
+	}
+	
+	@RequestMapping(value="/login.do", method=RequestMethod.POST)
+	public String login(UserVO vo, UserDAO dao, HttpSession session) {
 		System.out.println("로그인 처리");
 		
-		//1.사용자 입력 정보 추출
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-		
-		System.out.println("id: " +id +"/passwoard: " + password);
-		
-		//2.DB연동 처리
-		UserVO vo = new UserVO();
-		vo.setId(id);
-		vo.setPassword(password);
-		
-		UserDAO dao = new UserDAO();
 		UserVO user = dao.getUser(vo);
 		
-		ModelAndView mv = new ModelAndView();
 		if(user != null){
 			System.out.print("user[");
 			System.out.print(user.getId()+", "+user.getPassword());
 			System.out.println("]");
+			session.setAttribute("userName", user.getName());
 			
-			System.out.println("-->getBoardList.do");
-			mv.setViewName("redirect:getBoardList.do");
+			return "getBoardList.do";
 		}else {
-			System.out.println("-->login.jsp");
-			mv.setViewName("redirect:login.jsp");
+			return "login.jsp";
 		}
-		return mv;
 	}
 	
 }
